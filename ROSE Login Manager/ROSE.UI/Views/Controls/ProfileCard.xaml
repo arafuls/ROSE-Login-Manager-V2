@@ -1,0 +1,141 @@
+<UserControl
+    x:Class="ROSE.UI.Views.Controls.ProfileCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ROSE.UI.Views.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    d:DesignHeight="90"
+    d:DesignWidth="320"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="HoverAnimation">
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="BlurRadius"
+                To="20"
+                Duration="0:0:0.2"/>
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="ShadowDepth"
+                To="4"
+                Duration="0:0:0.2"/>
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="Opacity"
+                To="0.25"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="LeaveAnimation">
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="BlurRadius"
+                To="10"
+                Duration="0:0:0.2"/>
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="ShadowDepth"
+                To="2"
+                Duration="0:0:0.2"/>
+            <DoubleAnimation
+                Storyboard.TargetName="CardShadow"
+                Storyboard.TargetProperty="Opacity"
+                To="0.1"
+                Duration="0:0:0.2"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Border
+        x:Name="CardBorder"
+        CornerRadius="12"
+        Padding="8"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+        Background="{DynamicResource ControlFillColorDefaultBrush}">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource SystemAccentColorLight3}" Offset="0"/>
+                                    <GradientStop Color="{DynamicResource SystemAccentColorLight2}" Offset="0.5"/>
+                                    <GradientStop Color="{DynamicResource ControlFillColorDefault}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColorLight1}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Border.Effect>
+            <DropShadowEffect
+                x:Name="CardShadow"
+                BlurRadius="10"
+                Direction="270"
+                ShadowDepth="2"
+                Opacity="0.1"
+                Color="{DynamicResource SystemAccentColor}"/>
+        </Border.Effect>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Profile Picture -->
+            <Border
+                Width="48"
+                Height="48"
+                CornerRadius="28"
+                Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                BorderThickness="2"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
+                <Image
+                    Source="{Binding ProfileImage}"
+                    Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- Account Info -->
+            <StackPanel
+                Grid.Column="1"
+                Margin="8,0"
+                VerticalAlignment="Center">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                    Text="{Binding AccountName}"/>
+                <TextBlock
+                    Margin="0,4,0,0"
+                    FontSize="10"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    Text="{Binding Email}"/>
+            </StackPanel>
+
+            <!-- Play Button -->
+            <ui:Button
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Appearance="Primary"
+                Content="Play"
+                Padding="18,4"
+                Cursor="Hand"/>
+        </Grid>
+    </Border>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+            <BeginStoryboard Storyboard="{StaticResource HoverAnimation}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave">
+            <BeginStoryboard Storyboard="{StaticResource LeaveAnimation}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+</UserControl> 
